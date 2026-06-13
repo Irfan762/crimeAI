@@ -182,3 +182,60 @@ class CrimeForecast(Base):
     confidence_score = Column(Float)
     reasoning = Column(Text) # Explainability part
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+class VoiceNote(Base):
+    __tablename__ = "voice_notes"
+    id = Column(Integer, primary_key=True, index=True)
+    audio_url = Column(String)
+    transcript = Column(Text)
+    translated_text = Column(Text, nullable=True)
+    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+    case_id = Column(Integer, ForeignKey("cases.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
+    
+    case = relationship("Case", backref="voice_notes")
+    user = relationship("User", backref="voice_notes")
+
+class InvestigationMemory(Base):
+    __tablename__ = "investigation_memories"
+    id = Column(Integer, primary_key=True, index=True)
+    entity_type = Column(String) # Suspect, Vehicle, Location, Event
+    entity_id = Column(String, nullable=True)
+    fact_details = Column(Text)
+    confidence = Column(Float)
+    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+    case_id = Column(Integer, ForeignKey("cases.id"))
+    
+    case = relationship("Case", backref="memories")
+
+class TimelineEvent(Base):
+    __tablename__ = "timeline_events"
+    id = Column(Integer, primary_key=True, index=True)
+    event_time = Column(DateTime(timezone=True))
+    description = Column(Text)
+    source_type = Column(String) # VoiceNote, FIR, WitnessStatement
+    source_id = Column(Integer)
+    case_id = Column(Integer, ForeignKey("cases.id"))
+    
+    case = relationship("Case", backref="timeline_events")
+
+class WitnessStatement(Base):
+    __tablename__ = "witness_statements"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    contact = Column(String)
+    statement = Column(Text)
+    date_recorded = Column(DateTime(timezone=True), server_default=func.now())
+    case_id = Column(Integer, ForeignKey("cases.id"))
+    
+    case = relationship("Case", backref="witness_statements")
+
+class AIReport(Base):
+    __tablename__ = "ai_reports"
+    id = Column(Integer, primary_key=True, index=True)
+    type = Column(String) # Summary, Briefing
+    content = Column(Text)
+    generated_date = Column(DateTime(timezone=True), server_default=func.now())
+    case_id = Column(Integer, ForeignKey("cases.id"), nullable=True)
+    
+    case = relationship("Case", backref="ai_reports")
