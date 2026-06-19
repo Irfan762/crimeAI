@@ -30,6 +30,7 @@ def health_check():
 
 from app.routers import chat_router, analytics_router, network_router, forecast_router, auth_router, criminals_router, cases_router, firs_router, reports_router
 from app.routers.voice_copilot_router import router as voice_copilot_router
+from app.routers.demo_router import router as demo_router
 
 app.include_router(auth_router)
 app.include_router(chat_router)
@@ -41,3 +42,4 @@ app.include_router(cases_router)
 app.include_router(firs_router)
 app.include_router(reports_router)
 app.include_router(voice_copilot_router)
+app.include_router(demo_router)
