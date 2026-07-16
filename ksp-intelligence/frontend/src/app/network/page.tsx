@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
@@ -38,7 +38,7 @@ export default function NetworkPage() {
   // Prevent Cytoscape animation frames from outliving a React dev-mode remount.
   const layout = useMemo(() => ({ name: 'circle', padding: 50, animate: false }), []);
 
-  const stylesheet = useMemo<cytoscape.Stylesheet[]>(() => [
+  const stylesheet = useMemo<any[]>(() => [
     {
       selector: 'node',
       style: {
